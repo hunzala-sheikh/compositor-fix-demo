@@ -118,10 +118,32 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
         <div><span class="badge badge-info">Reference</span></div>
       </div>
       <div class="panel">
-        <h4>Ring Overlay Approach</h4>
+        <h4>Ring Overlay (Luminance Detection)</h4>
         <img src="images/test_ring_overlay_zoom.jpg" alt="Ring overlay" onclick="zoom(this.src)">
-        <div><span class="badge badge-pass">Ring Preserved + No Circle Edge</span></div>
-        <div class="radius-label">AI art fills to ring edge naturally. Ring ornaments restored from original. No visible circle boundary.</div>
+        <div><span class="badge badge-fail">Ring Still Changed</span></div>
+        <div class="radius-label">Luminance-based ring detection isn't accurate enough. Some ring pixels still overwritten.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pixel-perfect frame mask approach -->
+  <div class="section">
+    <h2 class="section-title">Pixel-Perfect Frame Mask (Derived from Cross-Book Comparison)</h2>
+    <p style="text-align:center; color:#8899aa; margin-bottom:20px; font-size:14px;">
+      Compare Book 1 and Book 2 originals: pixels that are <strong>identical</strong> across both = frame.
+      Pixels that <strong>differ</strong> = art area. This gives a pixel-accurate mask with zero guesswork.
+    </p>
+    <div class="radius-grid">
+      <div class="panel">
+        <h4>Original (Reference)</h4>
+        <img src="images/test_original_zoom.jpg" alt="Original" onclick="zoom(this.src)">
+        <div><span class="badge badge-info">Reference</span></div>
+      </div>
+      <div class="panel">
+        <h4>Frame Mask Approach</h4>
+        <img src="images/test_frame_mask_zoom.jpg" alt="Frame mask" onclick="zoom(this.src)">
+        <div><span class="badge badge-pass">Pixel-Perfect Frame</span></div>
+        <div class="radius-label">Frame mask derived by comparing two books. Every frame pixel (ring, scrollwork, text) preserved exactly. Art fills naturally to ring boundary.</div>
       </div>
     </div>
     <p class="hint">Click any image to zoom in for detail</p>
