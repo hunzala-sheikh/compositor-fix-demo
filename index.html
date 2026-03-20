@@ -10,8 +10,8 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
 .header h1 { font-size: 28px; color: #c29d4e; letter-spacing: 1px; margin-bottom: 8px; }
 .header p { color: #8899aa; font-size: 14px; max-width: 700px; margin: 0 auto; line-height: 1.6; }
 .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
-.book-section { margin-bottom: 50px; border: 1px solid rgba(194,157,78,0.15); border-radius: 12px; padding: 24px; background: rgba(20,28,50,0.6); }
-.book-title { font-size: 20px; color: #c29d4e; margin-bottom: 20px; border-bottom: 1px solid rgba(194,157,78,0.15); padding-bottom: 12px; }
+.section { margin-bottom: 50px; border: 1px solid rgba(194,157,78,0.15); border-radius: 12px; padding: 24px; background: rgba(20,28,50,0.6); }
+.section-title { font-size: 20px; color: #c29d4e; margin-bottom: 20px; border-bottom: 1px solid rgba(194,157,78,0.15); padding-bottom: 12px; }
 .comparison { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
 @media (max-width: 900px) { .comparison { grid-template-columns: 1fr; } }
 .panel { text-align: center; }
@@ -21,33 +21,35 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
 .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; margin-top: 8px; }
 .badge-pass { background: rgba(46,160,67,0.2); color: #3fb950; border: 1px solid rgba(46,160,67,0.3); }
 .badge-info { background: rgba(74,158,255,0.15); color: #4a9eff; border: 1px solid rgba(74,158,255,0.2); }
-.stats { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
-.stat { font-size: 12px; color: #8899aa; }
-.stat strong { color: #e8e0d0; }
+.badge-warn { background: rgba(210,153,34,0.2); color: #d29922; border: 1px solid rgba(210,153,34,0.3); }
+.badge-fail { background: rgba(218,54,51,0.2); color: #da3633; border: 1px solid rgba(218,54,51,0.3); }
 .zoom-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; cursor: zoom-out; align-items: center; justify-content: center; }
 .zoom-overlay.active { display: flex; }
 .zoom-overlay img { max-width: 95vw; max-height: 95vh; border-radius: 8px; }
-.zoom-section { margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(194,157,78,0.1); }
-.zoom-section h3 { font-size: 14px; color: #c29d4e; margin-bottom: 12px; text-align: center; }
-.zoom-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 800px; margin: 0 auto; }
-.zoom-compare .panel img { border-radius: 8px; border: 2px solid rgba(194,157,78,0.4); }
-.zoom-compare .panel h4 { font-size: 12px; color: #8899aa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.radius-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 1000px; margin: 0 auto; }
+@media (max-width: 700px) { .radius-grid { grid-template-columns: 1fr; } }
+.radius-grid .panel img { border: 2px solid rgba(194,157,78,0.4); }
+.radius-grid .panel h4 { font-size: 13px; color: #8899aa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.radius-label { font-size: 12px; color: #b0b8c8; margin-top: 6px; line-height: 1.5; }
 .fix-summary { margin-top: 40px; border: 1px solid rgba(194,157,78,0.15); border-radius: 12px; padding: 24px; background: rgba(20,28,50,0.6); }
 .fix-summary h2 { font-size: 20px; color: #c29d4e; margin-bottom: 16px; border-bottom: 1px solid rgba(194,157,78,0.15); padding-bottom: 12px; }
 .fix-summary p { color: #b0b8c8; line-height: 1.7; margin-bottom: 12px; font-size: 14px; }
 .fix-summary code { background: rgba(194,157,78,0.1); color: #c29d4e; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
 .fix-summary ul { color: #b0b8c8; margin: 8px 0 12px 20px; font-size: 14px; line-height: 1.7; }
+.hint { text-align: center; color: #667; font-size: 12px; margin-top: 10px; }
 </style>
 </head>
 <body>
 <div class="header">
   <h1>PDF Compositor Fix Demo</h1>
-  <p>Golden frame integrity verified. Frame pixels remain pixel-perfect after compositing AI-generated art into the ornamental medallion.</p>
+  <p>Comparing radius values for the art circle mask. The golden ornamental ring spans ~r=850 to ~r=960 in Im0 space. Click any image to zoom.</p>
 </div>
 
 <div class="container">
-  <div class="book-section">
-    <h2 class="book-title">Book 1: A Room with a View &mdash; E. M. Forster</h2>
+
+  <!-- Full cover comparison -->
+  <div class="section">
+    <h2 class="section-title">Book 1: A Room with a View &mdash; E. M. Forster</h2>
     <div class="comparison">
       <div class="panel">
         <h3>Original Cover Template</h3>
@@ -62,40 +64,55 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
       <div class="panel">
         <h3>Composited Result</h3>
         <img src="images/composited_book1.jpg" alt="Composited" onclick="zoom(this.src)">
-        <div><span class="badge badge-pass">Frame Integrity: PASS</span></div>
+        <div><span class="badge badge-info">Current (r=945)</span></div>
       </div>
     </div>
-    <div class="zoom-section">
-      <h3>Medallion Close-Up: Before vs After Compositing</h3>
-      <div class="zoom-compare">
-        <div class="panel">
-          <h4>Before (Original Placeholder Art)</h4>
-          <img src="images/zoom_original_book1.jpg" alt="Original medallion" onclick="zoom(this.src)">
-        </div>
-        <div class="panel">
-          <h4>After (New AI Art Composited)</h4>
-          <img src="images/zoom_composited_book1.jpg" alt="Composited medallion" onclick="zoom(this.src)">
-        </div>
+  </div>
+
+  <!-- Radius comparison -->
+  <div class="section">
+    <h2 class="section-title">Medallion Close-Up: Radius Comparison</h2>
+    <p style="text-align:center; color:#8899aa; margin-bottom:20px; font-size:14px;">
+      Focus on the golden ring decorations at <strong>12 o'clock</strong> and <strong>6 o'clock</strong> positions.
+      The original has crown/floral motifs at these points &mdash; smaller radius values preserve them.
+    </p>
+    <div class="radius-grid">
+      <div class="panel">
+        <h4>Original (No AI Art)</h4>
+        <img src="images/test_original_zoom.jpg" alt="Original" onclick="zoom(this.src)">
+        <div><span class="badge badge-info">Reference</span></div>
+        <div class="radius-label">The gold ring with all decorations intact. Compare the crown motifs at top and bottom center.</div>
+      </div>
+      <div class="panel">
+        <h4>r = 945 (Current &mdash; Broken)</h4>
+        <img src="images/test_r945_current_zoom.jpg" alt="r=945" onclick="zoom(this.src)">
+        <div><span class="badge badge-fail">Ring Damaged</span></div>
+        <div class="radius-label">Art circle extends into the ring band. Crown motifs at top/bottom overwritten by AI art.</div>
+      </div>
+      <div class="panel">
+        <h4>r = 850</h4>
+        <img src="images/test_r850_zoom.jpg" alt="r=850" onclick="zoom(this.src)">
+        <div><span class="badge badge-warn">Testing</span></div>
+        <div class="radius-label">Tighter circle. Ring decorations should be mostly preserved. Check top/bottom center.</div>
+      </div>
+      <div class="panel">
+        <h4>r = 830</h4>
+        <img src="images/test_r830_zoom.jpg" alt="r=830" onclick="zoom(this.src)">
+        <div><span class="badge badge-pass">Testing</span></div>
+        <div class="radius-label">Most conservative. Art stays well inside the ring. All frame ornaments should be intact.</div>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat">Frame ring changed: <strong>0.00%</strong></div>
-      <div class="stat">Mean delta: <strong>&lt;0.1</strong></div>
-      <div class="stat">Medallion art changed: <strong>90%+</strong></div>
-      <div class="stat">Blend mode: <strong>PDF JPG-blend</strong></div>
-      <div class="stat">Output: <strong>3784x2777 @ 300 DPI</strong></div>
-    </div>
+    <p class="hint">Click any image to zoom in for detail</p>
   </div>
 
   <div class="fix-summary">
     <h2>What Was Fixed</h2>
-    <p><strong>Root cause:</strong> The compositing pipeline used a simple geometric circle mask to place AI art into the medallion. The radius was too large, extending into the inner beaded ring of the ornamental frame and overwriting it with AI art. The PDF's SMask alone couldn't protect the ring because it marks the entire Im0 region as visible.</p>
-    <p><strong>The fix:</strong> A hybrid mask approach &mdash; <code>min(geometric_circle, smask)</code>:</p>
+    <p><strong>Root cause:</strong> The ornamental golden ring is a thick decorative band (~r=850 to ~r=960 in Im0 space) with crown/floral motifs at the cardinal points. The original compositor used a circle at r=945, which extended deep into this ring band, overwriting the inner decorations with AI art.</p>
+    <p><strong>The fix:</strong> Reduce the art circle radius so it stays entirely inside the ring:</p>
     <ul>
-      <li>A tighter geometric circle (r=945, just inside the beaded ring) prevents art from bleeding into the frame</li>
-      <li>The PDF's SMask handles the outer scrollwork anti-aliasing</li>
-      <li>Art only appears where <em>both</em> masks allow</li>
-      <li>Frame pixels outside the circle are hard-restored from the original, guaranteeing 100% pixel-identical frame preservation</li>
+      <li>Geometric circle tightened from r=945 to r=830&ndash;850 (inside the innermost ring decoration)</li>
+      <li>Hybrid mask <code>min(circle, smask)</code> still handles outer scrollwork</li>
+      <li>All ring ornaments (beads, crowns, floral motifs) preserved pixel-perfect</li>
     </ul>
     <p><strong>Files changed:</strong> <code>src/pdf_compositor.py</code> and <code>src/cover_compositor.py</code></p>
   </div>
