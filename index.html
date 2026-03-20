@@ -98,8 +98,30 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
       <div class="panel">
         <h4>r = 830</h4>
         <img src="images/test_r830_zoom.jpg" alt="r=830" onclick="zoom(this.src)">
-        <div><span class="badge badge-pass">Testing</span></div>
-        <div class="radius-label">Most conservative. Art stays well inside the ring. All frame ornaments should be intact.</div>
+        <div><span class="badge badge-warn">Visible Circle Edge</span></div>
+        <div class="radius-label">Ring preserved but visible circular cutoff where art stops. Not natural.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ring overlay approach -->
+  <div class="section">
+    <h2 class="section-title">New Approach: Ring Overlay (Art fills to ring, ring restored on top)</h2>
+    <p style="text-align:center; color:#8899aa; margin-bottom:20px; font-size:14px;">
+      Instead of limiting art with a circle, the AI art fills the <strong>entire medallion</strong>, then the golden ring is <strong>restored from the original</strong> on top.
+      No visible circle boundary. Ring decorations pixel-perfect.
+    </p>
+    <div class="radius-grid">
+      <div class="panel">
+        <h4>Original (Reference)</h4>
+        <img src="images/test_original_zoom.jpg" alt="Original" onclick="zoom(this.src)">
+        <div><span class="badge badge-info">Reference</span></div>
+      </div>
+      <div class="panel">
+        <h4>Ring Overlay Approach</h4>
+        <img src="images/test_ring_overlay_zoom.jpg" alt="Ring overlay" onclick="zoom(this.src)">
+        <div><span class="badge badge-pass">Ring Preserved + No Circle Edge</span></div>
+        <div class="radius-label">AI art fills to ring edge naturally. Ring ornaments restored from original. No visible circle boundary.</div>
       </div>
     </div>
     <p class="hint">Click any image to zoom in for detail</p>
