@@ -64,7 +64,7 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
       <div class="panel">
         <h3>Composited Result</h3>
         <img src="images/composited_book1.jpg" alt="Composited" onclick="zoom(this.src)">
-        <div><span class="badge badge-info">Current (r=945)</span></div>
+        <div><span class="badge badge-pass">Fixed (dynamic SMask r=925)</span></div>
       </div>
     </div>
   </div>
@@ -174,14 +174,17 @@ body { background: #0a0f1e; color: #e8e0d0; font-family: 'Georgia', serif; min-h
 
   <div class="fix-summary">
     <h2>What Was Fixed</h2>
-    <p><strong>Root cause:</strong> The ornamental golden ring is a thick decorative band (~r=850 to ~r=960 in Im0 space) with crown/floral motifs at the cardinal points. The original compositor used a circle at r=945, which extended deep into this ring band, overwriting the inner decorations with AI art.</p>
-    <p><strong>The fix:</strong> Reduce the art circle radius so it stays entirely inside the ring:</p>
+    <p><strong>Root cause:</strong> The ornamental golden ring is a thick decorative band (~r=850 to ~r=960 in Im0 space) with crown/floral motifs at the cardinal points. The original compositor used a hardcoded circle at r=945, which extended deep into this ring band, overwriting the inner decorations with AI art.</p>
+    <p><strong>The fix:</strong> Dynamic SMask-based radius detection + art fidelity improvements:</p>
     <ul>
-      <li>Geometric circle tightened from r=945 to r=830&ndash;850 (inside the innermost ring decoration)</li>
-      <li>Hybrid mask <code>min(circle, smask)</code> still handles outer scrollwork</li>
+      <li><code>compute_blend_radius_from_smask()</code> analyzes the PDF's SMask to find where the frame begins, then subtracts a safety margin to stay inside the beaded ring</li>
+      <li>Detected radius: r=925 (was hardcoded r=945). Just inside the inner beaded ring.</li>
+      <li>Removed art edge trimming and margin cropping &mdash; AI art colors are now pixel-perfect</li>
+      <li>Fixed <code>detect_blend_radius_from_smask()</code> in pdf_swap_compositor (was a no-op)</li>
+      <li>Center validation: cross-checks PDF transform center with SMask center of mass</li>
       <li>All ring ornaments (beads, crowns, floral motifs) preserved pixel-perfect</li>
     </ul>
-    <p><strong>Files changed:</strong> <code>src/pdf_compositor.py</code> and <code>src/cover_compositor.py</code></p>
+    <p><strong>Files changed:</strong> <code>src/pdf_compositor.py</code>, <code>src/pdf_swap_compositor.py</code>, <code>tests/test_pdf_swap_compositor.py</code></p>
   </div>
 </div>
 
